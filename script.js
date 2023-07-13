@@ -8,10 +8,11 @@ function fetchNewsData() {
 
   // Fetch news data from the API as JSON
   fetch(apiUrl, {
-    headers: {
-      Accept: 'application/json'
-    }
-  })
+  headers: {
+    "Accept": "application/json",
+    "Upgrade-Insecure-Requests": "1"
+  }
+})
     .then(response => response.json())
     .then(data => {
       // Process the news data
