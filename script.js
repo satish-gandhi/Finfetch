@@ -1,5 +1,3 @@
-// JavaScript code for the News Portal
-
 // Fetch news data from the News API
 function fetchNewsData() {
   // Your News API key
@@ -8,8 +6,12 @@ function fetchNewsData() {
   // Specify the endpoint URL and pass the API key as a query parameter
   const apiUrl = `https://newsapi.org/v2/top-headlines?country=us&apiKey=${apiKey}`;
 
-  // Fetch news data from the API
-  fetch(apiUrl)
+  // Fetch news data from the API as JSON
+  fetch(apiUrl, {
+    headers: {
+      Accept: 'application/json'
+    }
+  })
     .then(response => response.json())
     .then(data => {
       // Process the news data
@@ -29,31 +31,3 @@ function fetchNewsData() {
       console.log('Error fetching news data:', error);
     });
 }
-
-// Create a news article element
-function createArticleElement(article) {
-  const articleElement = document.createElement('article');
-  articleElement.classList.add('article');
-
-  const titleElement = document.createElement('h2');
-  titleElement.textContent = article.title;
-
-  const descriptionElement = document.createElement('p');
-  descriptionElement.textContent = article.description;
-
-  const sourceElement = document.createElement('p');
-  sourceElement.classList.add('source');
-  sourceElement.textContent = `Source: ${article.source.name}`;
-
-  articleElement.appendChild(titleElement);
-  articleElement.appendChild(descriptionElement);
-  articleElement.appendChild(sourceElement);
-
-  return articleElement;
-}
-
-// Fetch news data initially
-fetchNewsData();
-
-// Fetch news data every 5 minutes
-setInterval(fetchNewsData, 5 * 60 * 1000);  // 5 minutes in milliseconds
