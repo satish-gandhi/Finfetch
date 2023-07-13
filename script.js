@@ -1,34 +1,36 @@
-// Fetch news data from the News API
-function fetchNewsData() {
-  // Your News API key
-  const apiKey = 'd1da0ac33bda4d1fabcd766208881585';
+// script.js
 
-  // Specify the endpoint URL and pass the API key as a query parameter
-  const apiUrl = `https://newsapi.org/v2/top-headlines?country=us&apiKey=${apiKey}`;
-
-  // Fetch news data from the API as JSON
-  fetch(apiUrl, {
-  headers: {
-    "Accept": "application/json",
-    "Upgrade-Insecure-Requests": "1"
-  }
-})
+function fetchNews() {
+  fetch('/api/fetch-news')
     .then(response => response.json())
     .then(data => {
-      // Process the news data
       const articles = data.articles;
+      const newsContainer = document.getElementById('news-container');
 
-      // Clear existing news articles
-      const newsSection = document.getElementById('news-section');
-      newsSection.innerHTML = '';
+      // Clear existing articles
+      newsContainer.innerHTML = '';
 
-      // Insert news articles into the news section
+      // Loop through articles and create news cards
       articles.forEach(article => {
-        const articleElement = createArticleElement(article);
-        newsSection.appendChild(articleElement);
+        const { title, description } = article;
+
+        const card = document.createElement('div');
+        card.classList.add('news-card');
+
+        const titleElement = document.createElement('h2');
+        titleElement.textContent = title;
+
+        const descriptionElement = document.createElement('p');
+        descriptionElement.textContent = description;
+
+        card.appendChild(titleElement);
+        card.appendChild(descriptionElement);
+
+        newsContainer.appendChild(card);
       });
     })
-    .catch(error => {
-      console.log('Error fetching news data:', error);
-    });
+    .catch(error => console.error(error));
 }
+
+// Fetch news every 5 minutes
+setInterval(fetchNews, 300000);
